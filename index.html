@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AgriTrust · Storage Pod 4B</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8eef0;--card:#f7fafa;--ink:#12303a;--mute:#5b7580;--line:#c5d4d9;--ok:#2f8a4c;--warn:#c98f0a;--bad:#c23b2b;--band:#cfe6d6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1d22;--card:#172a31;--ink:#e3eef1;--mute:#8aa4ad;--line:#2b434c;--ok:#4cc072;--warn:#e5ac2c;--bad:#ee6a58;--band:#21433a}}
+:root[data-theme="dark"]{--bg:#0f1d22;--card:#172a31;--ink:#e3eef1;--mute:#8aa4ad;--line:#2b434c;--ok:#4cc072;--warn:#e5ac2c;--bad:#ee6a58;--band:#21433a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Archivo,system-ui,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:26px;font-weight:800;margin:0}
+h2{font-size:18px;font-weight:800;margin:0 0 4px}
+.hint{color:var(--mute);font-size:13px;margin:0 0 12px}
+.mic{font-size:18px;padding:12px 22px;border-width:2.5px;border-color:var(--ok)}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end;margin-bottom:16px}
+.sub{color:var(--mute);margin:2px 0 0}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;font-weight:600;border:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:8px 14px;border-radius:6px;cursor:pointer}
+button.hot{background:var(--bad);border-color:var(--bad);color:#fff}
+button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
+.full{grid-column:1/-1}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.g{margin-bottom:14px}
+.g .r{display:flex;justify-content:space-between;font-weight:600}
+.g small{color:var(--mute);font-weight:400}
+.track{position:relative;height:10px;background:var(--line);border-radius:5px;margin-top:6px}
+.band{position:absolute;top:0;bottom:0;background:var(--band);border:1px solid var(--ok);border-radius:5px}
+.mk{position:absolute;top:-4px;width:6px;height:18px;border-radius:3px;background:var(--ink);transform:translateX(-3px);transition:left .6s}
+.mk.b{background:var(--bad)}
+.chip{display:inline-block;padding:2px 10px;border-radius:99px;font-size:13px;font-weight:600;border:1.5px solid var(--ok);color:var(--ok)}
+.chip.on{border-color:var(--warn);color:var(--warn)}
+.batch{padding:10px 0;border-top:1px solid var(--line)}
+.batch:first-of-type{border-top:0}
+.bar{height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;transition:width .6s,background .6s}
+.row{display:flex;justify-content:space-between;gap:8px}
+.log{list-style:none;margin:0;padding:0;max-height:240px;overflow:auto}
+.log li{padding:6px 0;border-top:1px solid var(--line)}
+.log li:first-child{border-top:0}
+.log b{font-variant-numeric:tabular-nums}
+.log .bad{color:var(--bad)}.log .ok{color:var(--ok)}
+.sale{border:1.5px dashed var(--warn);border-radius:6px;padding:10px;margin-top:10px}
+.mx{overflow-x:auto}
+table{border-collapse:collapse;min-width:420px;width:100%}
+th,td{padding:6px;text-align:center;font-size:13px;border:1px solid var(--line)}
+td button{padding:2px 6px;border-width:1px;width:100%;font-size:13px}
+td.n button{border-color:var(--bad);color:var(--bad)}td.y button{border-color:var(--ok);color:var(--ok)}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+label{font-weight:600;font-size:13px;display:block}
+input,select{width:100%;font:inherit;padding:8px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);margin-top:4px}
+input:focus-visible{outline:3px solid var(--warn);outline-offset:1px}
+#verdict{margin-top:12px;min-height:22px;border-left:5px solid var(--line);padding-left:10px}
+#verdict.ok{border-color:var(--ok)}#verdict.warn{border-color:var(--warn)}#verdict.bad{border-color:var(--bad)}
+#verdict p{margin:4px 0 0;font-weight:400}
+#verdict small{color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+ <div><h1>AgriTrust AI: Storage Pod 4B</h1><p class="sub">Cold room · West Bengal demo · live sensor feed</p></div>
+ <div class="btns">
+  <button class="hot" onclick="spike('e')">Spike ethylene</button>
+  <button class="hot" onclick="spike('h')">Spike humidity + heat</button>
+  <button onclick="reset()">Reset pod</button>
+ </div>
+</div>
+<div class="grid">
+ <section class="card" aria-label="Sensor telemetry">
+  <div class="row"><h2>Live sensor readings</h2><span id="hvac" class="chip">Ventilation normal</span></div>
+  <p class="hint">Ethylene, temperature, humidity and CO₂ against their safe ranges.</p><div id="gauges"></div>
+ </section>
+ <section class="card" aria-label="Shelf life">
+  <h2>Shelf-life countdown by batch</h2><p class="hint">Days left before each batch spoils. Green is fresh, red means dispatch now.</p>
+  <div id="batches"></div>
+  <div id="sales"></div>
+ </section>
+ <section class="card" aria-label="Voice listing">
+  <h2>Add produce by voice</h2><p class="hint">Choose your language, tap Speak, and say the crop, weight in kg and when it is ready.</p>
+  <div class="pick"><label>Language<select id="lg"><option value="en-IN">English</option><option value="hi-IN">हिन्दी</option><option value="bn-IN">বাংলা</option></select></label><div style="align-self:end"><button class="mic" onclick="listen()">🎤 Speak</button></div></div>
+  <label>Your village or district<input id="vl" placeholder="e.g. Hooghly" autocomplete="off"></label>
+  <label style="margin-top:8px">Or type what you have<input id="vt" autocomplete="off"></label>
+  <div style="margin-top:10px"><button onclick="reg()">Add to inventory</button></div>
+  <pre id="vr" style="white-space:pre-wrap;font-size:13px;margin:10px 0 0">Parsed fields appear here.</pre>
+ </section>
+ <section class="card" aria-label="Origin passport">
+  <h2>Batch origin passport</h2><p class="hint">The journey of this batch from farm to buyer. Buyers can check it.</p>
+  <label>Batch<select id="pb" onchange="pass()"></select></label>
+  <div id="pp" style="margin-top:10px"></div>
+  
+ </section>
+ <section class="card" aria-label="Alert log"><h2>Alerts and events</h2><p class="hint">Newest first: sensor breaches and automatic actions.</p><ul class="log" id="log"></ul></section>
+ <section class="card" aria-label="Storage compatibility checker">
+  <h2>Storage compatibility check</h2><p class="hint">Check whether two items can share a room without spoiling.</p>
+  <div class="pick"><label>First item<input id="ia" list="items" placeholder="e.g. onions" autocomplete="off" onchange="check()"></label><label>Second item<input id="ib" list="items" placeholder="e.g. wheat" autocomplete="off" onchange="check()"></label></div>
+  <datalist id="items"></datalist>
+  <button onclick="check()">Check compatibility</button>
+  <div id="verdict">Pick or type any two vegetables, grains, pulses or fruits.</div>
+ </section>
+</div>
+</main>
+<script>
+const S={e:{n:'Ethylene',u:'ppm',min:0,max:4,lo:0,hi:1,d:1},t:{n:'Temperature',u:'°C',min:-2,max:20,lo:2,hi:8,d:1},h:{n:'Humidity',u:'% RH',min:40,max:100,lo:65,hi:85,d:0},c:{n:'CO₂',u:'ppm',min:200,max:2000,lo:400,hi:1000,d:0}};
+const NORM={e:.5,t:4.5,h:75,c:600};
+const CROP={tomatoes:{base:8,w:{e:1,t:1.3,h:.8,c:.6}},potatoes:{base:12,w:{e:.5,t:1,h:1.2,c:.4}},greens:{base:5,w:{e:1.6,t:1.4,h:.6,c:.8}},apples:{base:20,w:{e:.3,t:1,h:.5,c:.3}}};
+let v,B,flags,sales,logs,clock,hvac,L=[];
+function reset(){v={...NORM};L=[];B=[{id:402,crop:'Jyoti potatoes',k:'potatoes',kg:480,r:12,p:22,loc:'Hooghly',grade:'A'},{id:517,crop:'Tomatoes',k:'tomatoes',kg:150,r:8,p:35,loc:'Nadia',grade:'B+'},{id:388,crop:'Apples',k:'apples',kg:900,r:20,p:120,loc:'Kolkata cold hub',grade:'A'}];flags={};sales=[];logs=[];clock=9*60;hvac=false;B.forEach(b=>led(b,'registered',b.kg+' kg from '+b.loc));say('Pod online. All stimuli within safe range.','ok');draw();pass()}
+const hhmm=()=>String(Math.floor(clock/60)%24).padStart(2,'0')+':'+String(clock%60).padStart(2,'0');
+function say(m,c){logs.unshift({t:hhmm(),m,c})}
+function spike(w){B.forEach(b=>led(b,'stimulus_breach',w==='e'?'ethylene 3.4 ppm':'RH 94%, 14 C'));if(w==='e'){v.e=3.4;say('Ethylene spike detected in Pod 4B. Scrubbers starting.','bad')}else{v.h=94;v.t=14;say('High humidity and heat detected. Mold risk raised.','bad')}draw()}
+const out=k=>v[k]>S[k].hi||v[k]<S[k].lo;
+function stress(c){const x={e:Math.max(0,(v.e-1)/2),t:Math.max(0,(v.t-8)/6)+Math.max(0,(2-v.t)/2),h:Math.max(0,(v.h-85)/10)+Math.max(0,(65-v.h)/15),c:Math.max(0,(v.c-1000)/1000)};return Object.keys(x).reduce((a,k)=>a+x[k]*c.w[k],0)}
+function tick(){clock+=5;const bad=Object.keys(S).some(out);
+ if(bad&&!hvac){hvac=true;say('Automatic response: ventilation up, ethylene scrubbers on.','ok')}
+ if(!bad&&hvac){hvac=false;say('Pod back in safe range. Ventilation normal.','ok')}
+ const rate=hvac?.12:.04;for(const k in v)v[k]+=(NORM[k]-v[k])*rate+(Math.random()-.5)*(S[k].max-S[k].min)*.004;
+ for(const k in S){const o=out(k);if(o&&!flags[k])say(S[k].n+' out of range: '+v[k].toFixed(S[k].d)+' '+S[k].u,'bad');flags[k]=o}
+ B.forEach(b=>{const c=CROP[b.k],tgt=c.base/(1+stress(c)*3),prev=b.r;b.r+=(tgt-b.r)*.25;
+  if(prev>=3&&b.r<3&&!b.sale){b.sale=true;say('Batch #'+b.id+' ('+b.crop+') shelf-life under 3 days. Listed for distress sale.','bad');sales.push(b);led(b,'distress_listed','ERSL '+b.r.toFixed(1)+' days')}
+  if(b.sale&&b.r>=3.5){b.sale=false;sales=sales.filter(x=>x!==b);say('Batch #'+b.id+' recovered. Distress listing withdrawn.','ok')}});
+ draw()}
+function draw(){
+ gauges.innerHTML=Object.keys(S).map(k=>{const s=S[k],p=x=>Math.min(100,Math.max(0,(x-s.min)/(s.max-s.min)*100));
+  return `<div class="g"><div class="r"><span>${s.n}</span><span>${v[k].toFixed(s.d)} ${s.u} <small>safe ${s.lo}–${s.hi}</small></span></div><div class="track"><div class="band" style="left:${p(s.lo)}%;width:${p(s.hi)-p(s.lo)}%"></div><div class="mk ${out(k)?'b':''}" style="left:${p(v[k])}%"></div></div></div>`}).join('');
+ const h=document.getElementById('hvac');h.textContent=hvac?'Ventilation boosted':'Ventilation normal';h.className='chip'+(hvac?' on':'');
+ batches.innerHTML=B.map(b=>{const c=CROP[b.k],f=b.r/c.base,col=f>.6?'var(--ok)':f>.3?'var(--warn)':'var(--bad)',st=f>.6?'Fresh':f>.3?'Ripening':'Dispatch now';
+  return `<div class="batch"><div class="row"><b>#${b.id} ${b.crop}</b>${b.nw?' <span class="chip on">New</span>':''}<span>${b.r.toFixed(1)} days · ${st}</span></div><small style="color:var(--mute)">${b.kg} kg · ₹${b.p}/kg · ${b.loc}</small><div class="bar"><i style="width:${Math.max(3,f*100)}%;background:${col}"></i></div></div>`}).join('');
+ document.getElementById('sales').innerHTML=sales.map(b=>`<div class="sale"><b>Distress sale · Batch #${b.id}</b><br>${b.kg} kg ${b.crop.toLowerCase()} · ₹${b.p} → ₹${(b.p*(1-dc(b)/100)).toFixed(0)}/kg (${dc(b)}% off) · open to B2B buyers</div>`).join('');
+ log.innerHTML=logs.slice(0,30).map(l=>`<li><b>${l.t}</b> <span class="${l.c}">${l.m}</span></li>`).join('')}
+/* [type, ethylene output 0-3, ethylene sensitivity 0-3, humidity need] */
+const V='Vegetable',F='Fruit',G='Grain',P='Pulse';
+const IT={apples:[F,3,1,'high'],bananas:[F,3,2,'mid'],mangoes:[F,2,2,'mid'],pears:[F,3,2,'high'],avocados:[F,3,2,'mid'],tomatoes:[V,2,1,'mid'],potatoes:[V,0,1,'mid'],'sweet potatoes':[V,0,1,'mid'],onions:[V,0,1,'dry'],garlic:[V,0,1,'dry'],pumpkin:[V,0,1,'dry'],carrots:[V,0,3,'high'],cabbage:[V,0,3,'high'],cauliflower:[V,0,3,'high'],broccoli:[V,0,3,'high'],spinach:[V,0,3,'high'],lettuce:[V,0,3,'high'],cucumbers:[V,0,3,'high'],coriander:[V,0,3,'high'],'green beans':[V,0,2,'high'],'green peas':[V,0,1,'high'],beetroot:[V,0,1,'high'],radish:[V,0,2,'high'],okra:[V,0,2,'mid'],eggplant:[V,1,2,'mid'],peppers:[V,1,2,'mid'],rice:[G,0,0,'dry'],wheat:[G,0,0,'dry'],maize:[G,0,0,'dry'],oats:[G,0,0,'dry'],barley:[G,0,0,'dry'],millet:[G,0,0,'dry'],sorghum:[G,0,0,'dry'],lentils:[P,0,0,'dry'],chickpeas:[P,0,0,'dry'],'black gram':[P,0,0,'dry'],'green gram':[P,0,0,'dry'],'kidney beans':[P,0,0,'dry'],'pigeon peas':[P,0,0,'dry'],soybeans:[P,0,0,'dry']};
+const RH={dry:'50–65% RH',mid:'75–90% RH',high:'90–95% RH'};
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+document.getElementById('items').innerHTML=Object.keys(IT).sort().map(k=>`<option value="${cap(k)}">${IT[k][0]}</option>`).join('');
+function find(s){s=s.trim().toLowerCase();const t=s.replace(/s$/,'');return IT[s]?s:IT[s+'s']?s+'s':IT[t]?t:null}
+
+
+function check(){const el=document.getElementById('verdict'),x=document.getElementById('ia').value,y=document.getElementById('ib').value;
+ if(!x.trim()||!y.trim()){el.className='';el.textContent='Pick or type any two vegetables, grains, pulses or fruits.';return}
+ const a=find(x),b=find(y),miss=[!a&&x.trim(),!b&&y.trim()].filter(Boolean);
+ if(miss.length){el.className='';el.textContent=miss.join(' and ')+(miss.length>1?' are':' is')+' not in the list yet. Pick the closest match from the suggestions.';return}
+ const A=IT[a],B=IT[b],why=[];let lvl=0;
+ const p=A[1]*B[2],q=B[1]*A[2],r=Math.max(p,q),pr=p>=q?a:b,se=pr===a?b:a;
+ if(a!==b){
+  if(r>=4){lvl=2;why.push(`${cap(pr)} give off ethylene, which speeds up ripening, yellowing and decay in ${se}.`)}
+  else if(r>=2){lvl=1;why.push(`${cap(pr)} give off some ethylene that can shorten the life of ${se}. Use separate zones with scrubbers.`)}
+  const d=[A[3],B[3]];
+  if(d.includes('dry')&&d.includes('high')){lvl=2;why.push(`Humidity clash: one needs about ${RH.dry}, the other about ${RH.high}. Damp air makes dry stock absorb moisture and grow mold.`)}
+  else if(d.includes('dry')&&d.includes('mid')){lvl=Math.max(lvl,1);why.push(`Humidity gap: ${RH.dry} versus ${RH.mid}. Keep them in separate bays.`)}
+ }
+ const head=a===b?'Same item. No conflict.':lvl===2?'Keep apart':lvl===1?'Store with caution':'Safe to store together';
+ if(!why.length)why.push(a===b?'Combine into one batch or keep as separate lots.':`Neither gives off enough ethylene to harm the other, and both suit similar humidity.`);
+ el.className=lvl===2?'bad':lvl===1?'warn':'ok';
+ el.innerHTML=`<b>${cap(a)} + ${b}: ${head}</b>`+why.map(w=>`<p>${w}</p>`).join('')+`<p><small>${cap(a)}: ${A[0].toLowerCase()}, ${RH[A[3]]}. ${cap(b)}: ${B[0].toLowerCase()}, ${RH[B[3]]}. Typical values, so check crop-specific guidance.</small></p>`}
+const gauges=document.getElementById('gauges'),batches=document.getElementById('batches'),log=document.getElementById('log');
+const dc=b=>Math.round(20+Math.min(1,Math.max(0,(3-b.r)/3))*20);
+function hs(s){let a=3735928559,b=1103547991;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^a>>>16,2246822507)^Math.imul(b^b>>>13,3266489909);b=Math.imul(b^b>>>16,2246822507)^Math.imul(a^a>>>13,3266489909);return (b>>>0).toString(16).padStart(8,'0')+(a>>>0).toString(16).padStart(8,'0')}
+function led(b,type,note){const pr=L.filter(x=>x.id===b.id).slice(-1)[0],p=pr?pr.h:'0'.repeat(16),t=hhmm();L.push({id:b.id,type,note,t,p,h:hs(p+b.id+type+note+t)});pass()}
+function pass(){const s=document.getElementById('pb'),cur=s.value;s.innerHTML=B.map(b=>`<option value="${b.id}">#${b.id} ${b.crop}</option>`).join('');if(B.some(b=>String(b.id)===cur))s.value=cur;
+ const b=B.find(x=>String(x.id)===s.value);if(!b)return;let ok=true,p='0'.repeat(16);
+ const rows=L.filter(x=>x.id===b.id).map(x=>{const good=x.p===p&&x.h===hs(x.p+x.id+x.type+x.note+x.t);ok=ok&&good;p=x.h;return `<li><b>${x.t}</b> ${x.type.replace('_',' ')}: ${x.note}<br><small style="color:var(--${good?'mute':'bad'})">hash ${x.h.slice(0,10)} ← ${x.p.slice(0,6)} ${good?'':'MISMATCH'}</small></li>`}).join('');
+ document.getElementById('pp').innerHTML=`<div class="row"><b>${b.crop}</b><span>Grade ${b.grade}</span></div><div style="color:var(--mute)">${b.kg} kg · ${b.loc} · ₹${b.p}/kg · ${b.r.toFixed(1)} days left</div><p style="font-weight:600;margin:8px 0;color:var(--${ok?'ok':'bad'})">${ok?'Chain verified: no records changed':'Chain broken: a record was altered'}</p><ul class="log">${rows}</ul>`}
+function tamper(){const e=L.find(x=>String(x.id)===document.getElementById('pb').value);if(e)e.note='altered';pass()}
+const CR=[{re:/potato|aloo|आलू|আলু/i,k:'potatoes',n:'potatoes',p:22},{re:/tomato|tamatar|टमाटर|টমেটো/i,k:'tomatoes',n:'tomatoes',p:35},{re:/apple|सेब|আপেল/i,k:'apples',n:'apples',p:120}];
+function parse(t){t=t.replace(/[०-९]/g,c=>c.charCodeAt(0)-2406).replace(/[০-৯]/g,c=>c.charCodeAt(0)-2534);
+ const q=t.match(/(\d+(?:\.\d+)?)\s*(kg|kgs|kilos?|quintals?|tons?|tonnes?|किलो|কেজি)/i);let kg=q?+q[1]:null;if(q){const u=q[2].toLowerCase();if(u.startsWith('quintal'))kg*=100;else if(u.startsWith('ton'))kg*=1000}
+ const d=t.match(/(\d+)\s*(days?|din|दिन|দিন)/i),days=d?+d[1]:/tomorrow/i.test(t)?1:/today|now/i.test(t)?0:null;
+ const c=CR.find(x=>x.re.test(t)),vr=t.match(/of\s+([A-Za-z]+)\s+(?:potato|tomato|apple)/i),lo=t.match(/(hooghly|hugli|nadia|burdwan|bardhaman|howrah|kolkata|siliguri|malda|murshidabad|birbhum|bankura|midnapore|medinipur|হুগলি|নদিয়া|হাওড়া|কলকাতা)/i);
+ return {crop_type:c?(vr?cap(vr[1].toLowerCase())+' ':'')+c.n:null,quantity_kg:kg,location:lo?cap(lo[1].toLowerCase()):null,availability_days:days,_c:c}}
+function reg(){const o=parse(document.getElementById('vt').value),el=document.getElementById('vr'),c=o._c;delete o._c;
+ const miss=Object.keys(o).filter(k=>o[k]==null);el.textContent=JSON.stringify(o,null,1);
+ if(miss.length){el.textContent+='\nMissing: '+miss.join(', ')+'. Say or type it again with these details.';return}
+ const b={id:Math.max(...B.map(x=>x.id))+1,crop:cap(o.crop_type),k:c.k,kg:o.quantity_kg,r:CROP[c.k].base,p:c.p,loc:o.location,grade:'Pending'};
+ B.push(b);led(b,'registered',b.kg+' kg from '+b.loc);say('Voice listing: '+b.kg+' kg '+b.crop.toLowerCase()+' from '+b.loc+', ready in '+o.availability_days+' days.','ok');
+ el.textContent+='\nAdded as batch #'+b.id+'. Market benchmark: ₹'+c.p+'/kg (sample price).';draw()}
+function listen(){const R=window.SpeechRecognition||window.webkitSpeechRecognition,el=document.getElementById('vr');if(!R){el.textContent='Voice input is not supported in this browser. Type instead.';return}
+ const r=new R();r.lang=document.getElementById('lg').value;r.onresult=e=>{document.getElementById('vt').value=e.results[0][0].transcript;reg()};r.onerror=()=>{el.textContent='Could not use the microphone. Allow access or type instead.'};try{r.start();el.textContent='Listening...'}catch(e){}}
+Object.assign(CROP,{root:{base:12,w:{e:.5,t:1,h:1.2,c:.4}},leafy:{base:5,w:{e:1.6,t:1.4,h:.6,c:.8}},fruitveg:{base:8,w:{e:1,t:1.3,h:.8,c:.6}},fruit:{base:14,w:{e:.3,t:1,h:.5,c:.3}},dry:{base:180,w:{e:.1,t:.4,h:1.5,c:.3}}});
+const PF=[[/potato|carrot|beet|radish|onion|garlic|ginger|turnip|yam/i,'root',25],[/spinach|lettuce|cabbage|coriander|palak|methi|mint|cauliflower|broccoli|greens|leaf/i,'leafy',40],[/tomato|brinjal|eggplant|okra|bhindi|chilli|capsicum|pepper|cucumber|gourd|pumpkin|beans|peas|corn/i,'fruitveg',35],[/apple|banana|mango|orange|grape|papaya|guava|pear|litchi|lychee|pineapple|melon|lemon|pomegranate/i,'fruit',70],[/rice|wheat|maize|dal|lentil|gram|chickpea|millet|oats|barley|pulse/i,'dry',45]];
+const PN={root:'root crop',leafy:'leafy greens',fruitveg:'fruit vegetable',fruit:'fruit',dry:'dry grain or pulse'};
+function prof(n){const f=PF.find(x=>x[0].test(n));return f?{k:f[1],p:f[2],d:''}:{k:'fruitveg',p:30,d:' (crop not recognised, default profile used)'}}
+function guess(t){const m=t.match(/(?:kg|kgs|kilos?|quintals?|tons?|tonnes?|किलो|কেজি)\s*(?:of\s+)?([^\d,.]+?)(?=\s+(?:in|at|from|ready|available|by|near|within|after)\b|[,.]|$)/i);if(m&&m[1].trim())return m[1].trim().toLowerCase();const n=t.match(/(?:have|got|selling|harvested)\s+(?:some\s+)?([a-z ]+?)(?=\s+(?:\d|in\b|at\b|from\b|ready)|$)/i);return n?n[1].trim().toLowerCase():null}
+function reg(){const t=document.getElementById('vt').value,o=parse(t),el=document.getElementById('vr'),c=o._c;delete o._c;
+ if(!o.crop_type)o.crop_type=guess(t);
+ if(!o.location){const m=t.match(/\b(?:in|at|from|near)\s+(?!\d)([a-z]+)/i);if(m)o.location=cap(m[1].toLowerCase())}
+ const miss=Object.keys(o).filter(k=>o[k]==null);el.textContent=JSON.stringify(o,null,1);
+ if(miss.length){el.textContent+='\nMissing: '+miss.join(', ')+'. Say or type it again with these details.';return}
+ const pf=c?{k:c.k,p:c.p,d:''}:prof(o.crop_type);
+ const b={id:Math.max(...B.map(x=>x.id))+1,crop:cap(o.crop_type),k:pf.k,kg:o.quantity_kg,r:CROP[pf.k].base,p:pf.p,loc:o.location,grade:'Pending',nw:1};
+ B.push(b);led(b,'registered',b.kg+' kg from '+b.loc);say('Voice listing: '+b.kg+' kg '+b.crop.toLowerCase()+' from '+b.loc+', ready in '+o.availability_days+' days.','ok');
+ el.textContent+='\nAdded to remaining shelf-life as batch #'+b.id+'. Starting estimate: '+b.r+' days ('+(PN[pf.k]||'crop')+' profile)'+pf.d+'. Price: ₹'+b.p+'/kg (sample estimate).';
+ setTimeout(()=>{b.nw=0;draw()},6000);draw();document.getElementById('batches').scrollIntoView({behavior:'smooth',block:'nearest'})}
+const LG=[['hi-IN','हिन्दी','मेरे पास 200 किलो टमाटर है, 2 दिन में तैयार'],['bn-IN','বাংলা','আমার ২০০ কেজি টমেটো আছে, ২ দিনে তৈরি'],['ta-IN','தமிழ்','என்னிடம் 200 கிலோ தக்காளி உள்ளது, 2 நாட்களில் தயார்'],['te-IN','తెలుగు','నా దగ్గర 200 కిలోల టమాటా ఉంది, 2 రోజుల్లో సిద్ధం'],['mr-IN','मराठी','माझ्याकडे 200 किलो टोमॅटो आहे, 2 दिवसांत तयार'],['gu-IN','ગુજરાતી','મારી પાસે 200 કિલો ટામેટા છે, 2 દિવસમાં તૈયાર'],['kn-IN','ಕನ್ನಡ','ನನ್ನ ಬಳಿ 200 ಕೆಜಿ ಟೊಮೆಟೊ ಇದೆ, 2 ದಿನಗಳಲ್ಲಿ ಸಿದ್ಧ'],['ml-IN','മലയാളം','എന്റെ കയ്യിൽ 200 കിലോ തക്കാളി ഉണ്ട്, 2 ദിവസത്തിൽ തയ്യാർ'],['pa-IN','ਪੰਜਾਬੀ','ਮੇਰੇ ਕੋਲ 200 ਕਿਲੋ ਟਮਾਟਰ ਹੈ, 2 ਦਿਨਾਂ ਵਿੱਚ ਤਿਆਰ'],['en-IN','English','I have 200kg of tomatoes ready in 2 days']];
+const lg=document.getElementById('lg');lg.innerHTML=LG.map(l=>`<option value="${l[0]}">${l[1]}</option>`).join('');
+function ex(){document.getElementById('vt').value=LG.find(l=>l[0]===lg.value)[2]}lg.onchange=ex;ex();
+const UK='kilograms?|kg|kgs|kilos?|किलो|কেজি|কিলো|கிலோ|కిలో|કિલો|ಕೆಜಿ|ಕಿಲೋ|കിലോ|ਕਿਲੋ',QN='quintals?|क्विंटल|কুইন্টাল|குவிண்டால்|క్వింటాల్|ક્વિન્ટલ|ಕ್ವಿಂಟಾಲ್|ക്വിന്റൽ|ਕੁਇੰਟਲ',DY='days?|din|दिन|दिवस|দিন|நாட்?கள்?|நாள்|రోజు|દિવસ|ದಿನ|ദിവസ|ਦਿਨ';
+const PF2=[[/potato|aloo|आलू|আলু|உருளை|బంగాళ|बटाटा|બટાકા|ಆಲೂ|ഉരുളക്കിഴങ്ങ്|ਆਲੂ/i,'potatoes','root',22],[/tomato|tamatar|टमाटर|टोमॅटो|টমেটো|தக்காளி|టమాట|టమోటా|ટામેટા|ટમેટા|ಟೊಮೆಟೊ|തക്കാളി|ਟਮਾਟਰ/i,'tomatoes','fruitveg',35],[/onion|pyaz|प्याज|कांदा|পেঁয়াজ|வெங்காயம்|ఉల్లి|ડુંગળી|ಈರುಳ್ಳಿ|ഉള്ളി|ਪਿਆਜ਼/i,'onions','root',30],[/brinjal|eggplant|baingan|बैंगन|বেগুন|கத்தரி|వంకాయ|वांगी|રીંગણ|ಬದನೆ|വഴുതന|ਬੈਂਗਣ/i,'brinjal','fruitveg',35],[/rice|चावल|तांदूळ|চাল|அரிசி|బియ్యం|ચોખા|ಅಕ್ಕಿ|അരി|ਚਾਵਲ/i,'rice','dry',45],[/wheat|गेहूं|गहू|গম|கோதுமை|గోధుమ|ઘઉં|ಗೋಧಿ|ഗോതമ്പ്|ਕਣਕ/i,'wheat','dry',30],[/spinach|palak|पालक|পালং|பசலை|పాలకూర|પાલક|ಪಾಲಕ್|ചീര|ਪਾਲਕ/i,'spinach','leafy',40],[/banana|केला|কলা|வாழை|అరటి|केळी|કેળા|ಬಾಳೆ|വാഴ|ਕੇਲਾ/i,'bananas','fruit',40],[/mango|மாம்பழம்|మామిడి|आंबा|કેરી|ಮಾವು|മാങ്ങ|ਅੰਬ/i,'mangoes','fruit',80]];
+function parse(t){t=t.replace(/\p{Nd}/gu,c=>{const p=c.codePointAt(0);return p<128?c:(p&15)-6});
+ const q=t.match(new RegExp('(\\d+(?:\\.\\d+)?)\\s*('+UK+'|'+QN+'|tons?|tonnes?)','i'));let kg=q?+q[1]:null;if(q){if(new RegExp('^('+QN+')$','i').test(q[2]))kg*=100;else if(/^ton/i.test(q[2]))kg*=1000}
+ const d=t.match(new RegExp('(\\d+)\\s*('+DY+')','i')),days=d?+d[1]:/tomorrow/i.test(t)?1:0;
+ const f=PF2.find(x=>x[0].test(t));let nm=null,k='fruitveg',p=30,df='';
+ if(f){nm=f[1];k=f[2];p=f[3];const v=t.match(/of\s+([A-Za-z]+)\s+(?:potato|tomato|onion|brinjal|mango|banana|spinach|rice|wheat)/i);if(v&&!/^(the|some|fresh|my)$/i.test(v[1]))nm=cap(v[1].toLowerCase())+' '+nm}
+ else{nm=guess(t);if(!nm||/[^\x00-\x7F]/.test(nm)){const m=t.match(new RegExp('(?:'+UK+'|'+QN+')\\s*(?:of\\s+)?(\\S+)','i'));nm=m?m[1].replace(/[,.।]+$/,''):null}if(nm){const g=prof(nm);k=g.k;p=g.p;df=g.d}}
+ const lo=document.getElementById('vl').value.trim()||(t.match(/\b(?:in|at|from|near)\s+(?!\d)([a-z]+)/i)||[])[1];
+ return {nm,k,p,kg,days,df,loc:lo?cap(lo.toLowerCase()):'Not given'}}
+function reg(){const o=parse(document.getElementById('vt').value),el=document.getElementById('vr');
+ if(!o.nm||!o.kg){el.textContent='Could not catch '+[!o.nm&&'the crop',!o.kg&&'the weight in kg'].filter(Boolean).join(' and ')+'. Please tap Speak and try again.';return}
+ const b={id:Math.max(...B.map(x=>x.id))+1,crop:cap(o.nm),k:o.k,kg:o.kg,r:CROP[o.k].base,p:o.p,loc:o.loc,grade:'Pending',nw:1};
+ B.push(b);led(b,'registered',b.kg+' kg from '+b.loc);say('Voice listing: '+b.kg+' kg '+b.crop.toLowerCase()+' from '+b.loc+', ready in '+o.days+' days.','ok');
+ el.textContent='Added: '+b.kg+' kg '+b.crop+' from '+b.loc+'. Ready in '+o.days+' day'+(o.days===1?'':'s')+'. Estimated shelf-life: '+b.r+' days'+o.df+'. Sample price: ₹'+b.p+'/kg.';
+ setTimeout(()=>{b.nw=0;draw()},6000);draw();document.getElementById('batches').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function pass(){const s=document.getElementById('pb'),cur=s.value;s.innerHTML=B.map(b=>`<option value='${b.id}'>#${b.id} ${b.crop}</option>`).join('');if(B.some(b=>String(b.id)===cur))s.value=cur;
+ const b=B.find(x=>String(x.id)===s.value);if(!b)return;let ok=true,p='0'.repeat(16);const EV={registered:'Listed by farmer',stimulus_breach:'Storage problem',distress_listed:'Put on discount sale'};
+ const rows=L.filter(x=>x.id===b.id).map(x=>{ok=ok&&x.p===p&&x.h===hs(x.p+x.id+x.type+x.note+x.t);p=x.h;return `<li><b>${x.t}</b> ${EV[x.type]||x.type}: ${x.note}</li>`}).join('');
+ document.getElementById('pp').innerHTML=`<div class='row'><b>${b.crop}</b><span>Grade ${b.grade}</span></div><div style='color:var(--mute)'>${b.kg} kg · ${b.loc} · ₹${b.p}/kg · ${b.r.toFixed(1)} days left</div><p style='font-weight:600;margin:8px 0;color:var(--${ok?'ok':'bad'})'>${ok?'✓ Verified: this record is complete and unchanged':'Record changed: do not trust this passport'}</p><ul class='log'>${rows}</ul>`}
+reset();setInterval(tick,1500);
+</script>
+</body>
+</html>
